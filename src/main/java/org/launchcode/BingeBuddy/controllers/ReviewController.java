@@ -43,22 +43,16 @@ public class ReviewController {
     }
 
     @PostMapping("/add")
-    public String addReview(@Valid @ModelAttribute Review review, Errors errors, Model model) {
+    public String addReview(@Valid @ModelAttribute Review review, Errors errors, Model model, Movie movie) {
         if (errors.hasErrors() || review.getMovie() == null || review.getMovie().getId() == null) {
             model.addAttribute("error", "All fields are required, and a movie must be selected.");
             model.addAttribute("movies", movieRepository.findAll());
             return "review-add";
         }
 
-        try {
-            Movie movie = movieRepository.findById(review.getMovie().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid movie ID: " + review.getMovie().getId()));
-            review.setMovie(movie);
-            reviewRepository.save(review);
-        } catch (Exception e) {
-            model.addAttribute("error", "An unexpected error occurred. Please try again.");
-            return "review-add";
-        }
+        model.addAttribute("review", reviewRepository.findAll());
+        review.setMovie(movie);
+        reviewRepository.save(review);
 
         return "redirect:/reviews";
     }

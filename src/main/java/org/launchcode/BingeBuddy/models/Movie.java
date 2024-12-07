@@ -3,6 +3,8 @@ package org.launchcode.BingeBuddy.models;
 import java.util.List;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
+import org.apache.logging.log4j.util.InternalApi;
 
 
 @Entity
@@ -29,11 +31,13 @@ public class Movie extends AbstractEntity {
     private String releaseYear;
 
     @Column(nullable = true)
+    @Size(min = 3, max = 500, message = "Location must be between 3 and 150 characters")
     private String description;
 
     @Column(nullable = true)
     private String posterUrl;
 
+    @InternalApi
     @Column(nullable = true, unique = true)
     private String apiId; // External API identifier (e.g., TheTVDB ID)
 

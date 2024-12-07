@@ -7,7 +7,7 @@
 <body>
 <div class="container mt-5">
     <h1>Add a Review</h1>
-    <form th:action="@{/reviews/add}" th:object="${review}" method="post">
+    <form th:action="@{/reviews/add}" th:object="${review}" method="POST">
         <div class="form-group">
             <label for="content">Content:</label>
             <textarea id="content" name="content" th:value="*{content}" class="form-control" required></textarea>
@@ -31,6 +31,14 @@
         </div>
         <button type="submit" class="btn btn-success">Submit Review</button>
     </form>
+    <ul class="list-group">
+        <li class="list-group-item" th:each="review : ${reviews}">
+            <p class="mb-1 font-weight-bold" th:text="${review.content}"></p>
+            <small th:text="'Rating: ' + ${review.rating}"></small>
+            <br>
+            <small th:text="'Movie: ' + ${review.movie.title}"></small>
+        </li>
+    </ul>
     <a th:href="@{/reviews}" class="btn btn-link mt-3">Back to Reviews</a>
 </div>
 

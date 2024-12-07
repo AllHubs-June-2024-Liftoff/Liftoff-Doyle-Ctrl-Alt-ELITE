@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="mb-4">Add a Movie</h1>
+    <h1 class="mb-4">Add a TV Show</h1>
     <form th:action="@{/movies/add}" th:object="${movie}" method="post">
         <div class="form-group">
             <label for="title">Title:</label>
@@ -26,7 +26,7 @@
         </div>
 
         <div class="form-group">
-            <label for="releaseYear">Release Year:</label>
+            <label for="releaseYear">Release Date:</label>
             <input id="releaseYear" type="text" name="releaseYear" th:value="*{releaseYear}" class="form-control">
         </div>
 
