@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Comments</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Comments for Review</h1>
+
+    <ul class="list-group mb-4">
+        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="comment : ${comments}">
+            <div>
+                <p class="mb-1" th:text="${comment.content}"></p>
+                <small th:text="'Posted by: ' + ${comment.user.username}"></small>
+            </div>
+            <form th:action="@{/comments/{id}(id=${comment.id})}" method="post" class="d-inline">
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+        </li>
+    </ul>
+
+    <div class="d-flex justify-content-between">
+        <a th:href="@{/comments/add(reviewId=${reviewId})}" class="btn btn-primary">Add Comment</a>
+        <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+

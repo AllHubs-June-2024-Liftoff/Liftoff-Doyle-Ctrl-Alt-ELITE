@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Review Details</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Review Details</h1>
+
+    <!-- Review Content -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="card-title" th:text="${review.movie.title}">Movie Title</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>Reviewed by:</strong> <span th:text="${review.user.username}">Username</span></p>
+            <p><strong>Rating:</strong> <span th:text="${review.rating}">5</span>/5</p>
+            <p><strong>Content:</strong></p>
+            <p th:text="${review.content}">This is the review content.</p>
+            <p><small>Created at: <span th:text="${review.createdAt}">2024-12-02</span></small></p>
+            <p><small>Last updated: <span th:text="${review.updatedAt}">2024-12-02</span></small></p>
+        </div>
+    </div>
+
+    <!-- Edit and Delete Actions -->
+    <div class="d-flex justify-content-between mb-4">
+        <a th:href="@{/reviews/edit/{id}(id=${review.id})}" class="btn btn-primary">Edit Review</a>
+        <form th:action="@{/reviews/delete/{id}(id=${review.id})}" method="post" class="d-inline">
+            <button type="submit" class="btn btn-danger">Delete Review</button>
+        </form>
+    </div>
+
+    <!-- Back to Reviews List -->
+    <div class="text-center">
+        <a th:href="@{/reviews}" class="btn btn-secondary">Back to All Reviews</a>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

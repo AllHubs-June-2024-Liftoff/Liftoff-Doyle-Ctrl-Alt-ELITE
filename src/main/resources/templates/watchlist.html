@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <title>My Watchlist</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">My Watchlist</h1>
+
+    <!-- Add to Watchlist Form -->
+    <form method="POST" action="/watchlist" class="mb-4">
+        <div class="form-row">
+            <div class="col-md-8">
+                <input type="text" name="movieTitle" class="form-control" placeholder="Movie/Show Title" required>
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-control">
+                    <option value="PLANNED">Planned</option>
+                    <option value="WATCHING">Watching</option>
+                    <option value="COMPLETED">Completed</option>
+                </select>
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary btn-block">Add</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Watchlist Items -->
+    <ul class="list-group">
+        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="item : ${watchlist}">
+            <div>
+                <p class="mb-1" th:text="${item.movieTitle}"></p>
+                <small th:text="'Status: ' + ${item.status}"></small>
+            </div>
+            <form method="POST" th:action="'/watchlist/delete/' + ${item.id}" class="d-inline">
+                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+            </form>
+        </li>
+    </ul>
+</div>
+
+<!-- Include Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+

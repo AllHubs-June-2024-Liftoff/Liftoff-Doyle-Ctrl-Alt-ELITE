@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Review</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Add a Review</h1>
+    <form th:action="@{/reviews/add}" th:object="${review}" method="post">
+        <div class="form-group">
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" th:value="*{content}" class="form-control" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="rating">Rating:</label>
+            <input id="rating" type="number" name="rating" th:value="*{rating}" class="form-control" min="1" max="5"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="movie">Movie:</label>
+            <select id="movie" name="movie.id" th:field="*{movie.id}" class="form-control">
+                <option value="" disabled selected>Select a movie</option>
+                <option th:each="movie : ${movies}" th:value="${movie.id}" th:text="${movie.title}"></option>
+            </select>
+        </div>
+        <div th:if="${#lists.isEmpty(movies)}" class="alert alert-warning">
+            No movies available. Please add a movie first.
+        </div>
+        <button type="submit" class="btn btn-success">Submit Review</button>
+    </form>
+    <a th:href="@{/reviews}" class="btn btn-link mt-3">Back to Reviews</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
