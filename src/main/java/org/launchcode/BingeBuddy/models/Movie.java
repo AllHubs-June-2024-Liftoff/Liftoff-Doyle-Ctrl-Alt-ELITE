@@ -1,5 +1,6 @@
 package org.launchcode.BingeBuddy.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -15,6 +16,8 @@ public class Movie extends AbstractEntity {
     private String title;
 
     private int rating;
+
+    private String type;
 
     @Column(nullable = true)
     private String genre;
@@ -42,7 +45,7 @@ public class Movie extends AbstractEntity {
     private String apiId; // External API identifier (e.g., TheTVDB ID)
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Review> reviews; // Association with reviews
+    private List<Review> reviews = new ArrayList<>(); // Association with reviews
 
 
     public Movie() {
@@ -111,18 +114,17 @@ public class Movie extends AbstractEntity {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
+    public void setReviews(List<Review> review) {
+        this.reviews = review;
     }
 
-    public void addReview(Review review) {
-        reviews.add(review);
-        review.setMovie(this);
+    public void addReview(Review newReview) {
+        this.reviews.add(newReview);
+        newReview.setMovie(this); // Establish bidirectional relationship
     }
 
-    public void removeReview(Review review) {
-        reviews.remove(review);
-        review.setMovie(null);
+    public void removeReview(Review reviewToRemove) {
+        this.reviews.remove(reviewToRemove);
+        reviewToRemove.setMovie(null); // Remove association
     }
 }
-

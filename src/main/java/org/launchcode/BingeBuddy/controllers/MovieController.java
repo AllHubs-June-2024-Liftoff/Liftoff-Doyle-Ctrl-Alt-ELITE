@@ -31,7 +31,7 @@ public class MovieController {
 
     // Display the form to add a movie
     @GetMapping("/add")
-    public String displayAddMovieForm(Model model) {
+    public String displayAddMovieForm(Model model, @RequestParam Movie movie) {
         model.addAttribute("movie", new Movie());
         return "movie-add"; // Returns the `movie-add.html` template
     }

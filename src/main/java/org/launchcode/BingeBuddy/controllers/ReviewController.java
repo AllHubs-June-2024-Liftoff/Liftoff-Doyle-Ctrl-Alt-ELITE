@@ -25,6 +25,10 @@ public class ReviewController {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    private List<Review> review;
+
+    private Movie movie;
+
     // Handle GET /reviews
     @GetMapping
     public String index(Model model) {
@@ -33,6 +37,13 @@ public class ReviewController {
         model.addAttribute("reviews", reviews);
         return "review";
     }
+
+//    @GetMapping("/reviews")
+//    public String showReviews(@RequestParam Long movieId, Model model) {
+//        Optional<Review> review = reviewRepository.findById(movieId);
+//        model.addAttribute("reviews", movie.getReviews()); // Pass the reviews
+//        return "reviews"; // Thymeleaf template name
+//    }
 
 
     @GetMapping("/add")
@@ -43,17 +54,17 @@ public class ReviewController {
     }
 
     @PostMapping("/add")
-    public String addReview(@Valid @ModelAttribute Review review, Errors errors, Model model, Movie movie) {
+    public String addReview(@Valid @ModelAttribute Review review, Errors errors, Model model) {
         if (errors.hasErrors() || review.getMovie() == null || review.getMovie().getId() == null) {
             model.addAttribute("error", "All fields are required, and a movie must be selected.");
             model.addAttribute("movies", movieRepository.findAll());
             return "review-add";
         }
 
-        model.addAttribute("review", reviewRepository.findAll());
-        review.setMovie(movie);
-        reviewRepository.save(review);
-
+        Movie movie = movieRepository.findById(review.getMovie().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid movie ID"));
+        review.setMovie(movie); // Set the fetched movie
+        reviewRepository.save(review); // Save the review
         return "redirect:/reviews";
     }
 
@@ -115,19 +126,19 @@ public class ReviewController {
         return "review-detail";
     }
 
-    @GetMapping("/reviews")
-    public String showAllReviews(Model model) {
-        List<Review> reviews = (List<Review>) reviewRepository.findAll();
-        model.addAttribute("reviews", reviews);
-        model.addAttribute("movies", movieRepository.findAll());
-        return "review";
-    }
+//    @GetMapping("/reviews")
+//    public String showAllReviews(Model model) {
+//        List<Review> reviews = (List<Review>) reviewRepository.findAll();
+//        model.addAttribute("reviews", reviews);
+//        model.addAttribute("movies", movieRepository.findAll());
+//        return "review";
+//    }
 
-    @Transactional
-    public void saveReview(Review review) {
-        Movie movie = movieRepository.findById(review.getMovie().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid movie ID"));
-        review.setMovie(movie);
-        reviewRepository.save(review);
-    }
+//    @Transactional
+//    public void saveReview(Review review) {
+//        Movie movie = movieRepository.findById(review.getMovie().getId())
+//                .orElseThrow(() -> new IllegalArgumentException("Invalid movie ID"));
+//        review.setMovie(movie);
+//        reviewRepository.save(review);
+//    }
 }

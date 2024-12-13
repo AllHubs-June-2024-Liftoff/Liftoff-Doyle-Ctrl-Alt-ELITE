@@ -37,5 +37,11 @@ public abstract class AbstractEntity {
     public void setId(Long id) {
 
     }
+
+    protected void remove(Review review) {
+    }
+
+    protected void add(Review review) {
+    }
 }
 

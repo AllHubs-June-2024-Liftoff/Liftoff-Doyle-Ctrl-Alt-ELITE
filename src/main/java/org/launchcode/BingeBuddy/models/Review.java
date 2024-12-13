@@ -3,6 +3,7 @@ package org.launchcode.BingeBuddy.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,7 @@ public class Review extends AbstractEntity {
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
+
 
 
     private LocalDateTime createdAt = LocalDateTime.now();
