@@ -22,14 +22,6 @@ public class Movie extends AbstractEntity {
     @Column(nullable = true)
     private String genre;
 
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
     @Column(nullable = true)
     private String releaseYear;
 
@@ -51,17 +43,33 @@ public class Movie extends AbstractEntity {
     public Movie() {
     }
 
-    public Movie(String title, String genre, String releaseDate, String description, String posterUrl, String apiId) {
+    public Movie(String title, String genre, String releaseDate, String description, String posterUrl, String apiId, String type) {
         this.title = title;
+        this.type = type;
         this.genre = genre;
         this.releaseYear = releaseDate;
         this.description = description;
         this.posterUrl = posterUrl;
         this.apiId = apiId;
+
     }
 
     // Getters and Setters
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
     public String getTitle() {
         return title;
     }
