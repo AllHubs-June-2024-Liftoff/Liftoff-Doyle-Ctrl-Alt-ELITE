@@ -43,8 +43,9 @@ public class Movie extends AbstractEntity {
     public Movie() {
     }
 
-    public Movie(String title, String genre, String releaseDate, String description, String posterUrl, String apiId, String type) {
+    public Movie(String title, int rating, String type, String genre, String releaseDate, String description, String posterUrl, String apiId) {
         this.title = title;
+        this.rating = rating;
         this.type = type;
         this.genre = genre;
         this.releaseYear = releaseDate;
@@ -70,6 +71,7 @@ public class Movie extends AbstractEntity {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
     public String getTitle() {
         return title;
     }

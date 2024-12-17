@@ -4,28 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0eb465d-5b26-4135-8798-906fb108eecf" name="Changes" comment="first push dont mind the views just wanted to test the models and controllers">
+    <list default="true" id="a0eb465d-5b26-4135-8798-906fb108eecf" name="Changes" comment="good">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/BingeBuddyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/BingeBuddyApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/HomeController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/MovieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/MovieController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/ReviewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/data/ReviewRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/data/ReviewRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/AbstractEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/AbstractEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/WatchlistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/WatchlistController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/data/WatchlistRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/data/WatchlistRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/Comment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/Movie.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/Review.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/comment-add.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/comment.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/movie-add.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/movie-list.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/review-add.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/review-detail.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/review.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/watchlist-add.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/watchlist.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +59,40 @@
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="application" type="c8890929:TasksNode$1" />
               </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BingeBuddy" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BingeBuddy" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build setup" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BingeBuddy" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BingeBuddy" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+                <item name="compileClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BingeBuddy" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+                <item name="runtimeClasspath" type="62daadca:ExternalSystemViewDefaultContributor$DependencyScopeExternalSystemNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="BingeBuddy" type="f1a62948:ProjectNode" />
+                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
+              </path>
             </expand>
             <select />
           </tree_state>
@@ -95,6 +127,9 @@
     &quot;accountId&quot;: &quot;19d8410c-cbf8-45a3-b080-4d2d0901db8a&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -110,11 +145,13 @@
   &quot;keyToString&quot;: {
     &quot;Gradle.BingeBuddy [bootRun].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.BingeBuddy [bootTestRun].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.BingeBuddy [build].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;be-modelcontroller&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/redma/Documents/Java101/java/BingeBuddy/src/main/resources/static&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/redma/Documents/Java101/java/BingeBuddy/build.gradle&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;promo.profiler&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -132,7 +169,7 @@
       <recent name="org.launchcode.BingeBuddy.models" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.BingeBuddy [bootRun]">
+  <component name="RunManager" selected="Gradle.BingeBuddy [bootTestRun]">
     <configuration name="BingeBuddy [bootRun]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -177,10 +214,33 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="BingeBuddy [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.BingeBuddy [bootRun]" />
         <item itemvalue="Gradle.BingeBuddy [bootTestRun]" />
+        <item itemvalue="Gradle.BingeBuddy [build]" />
+        <item itemvalue="Gradle.BingeBuddy [bootRun]" />
       </list>
     </recent_temporary>
   </component>
@@ -217,11 +277,29 @@
       <option name="project" value="LOCAL" />
       <updated>1733545874860</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="you">
+      <option name="closed" value="true" />
+      <created>1734060071643</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1734060071643</updated>
+    </task>
+    <task id="LOCAL-00005" summary="good">
+      <option name="closed" value="true" />
+      <created>1734060282011</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1734060282011</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first push dont mind the views just wanted to test the models and controllers" />
-    <option name="LAST_COMMIT_MESSAGE" value="first push dont mind the views just wanted to test the models and controllers" />
+    <MESSAGE value="you" />
+    <MESSAGE value="good" />
+    <option name="LAST_COMMIT_MESSAGE" value="good" />
   </component>
 </project>

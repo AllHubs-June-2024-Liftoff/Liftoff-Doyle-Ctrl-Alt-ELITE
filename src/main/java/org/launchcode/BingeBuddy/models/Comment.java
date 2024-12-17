@@ -37,7 +37,6 @@ public class Comment extends AbstractEntity {
     }
 
 
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

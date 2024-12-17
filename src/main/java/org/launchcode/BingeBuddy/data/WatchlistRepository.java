@@ -9,7 +9,5 @@ import java.util.List;
 
 @Repository
 public interface WatchlistRepository extends CrudRepository<Watchlist, Long> {
-
-
     List<Watchlist> findByStatus(WatchlistStatus status);
 }

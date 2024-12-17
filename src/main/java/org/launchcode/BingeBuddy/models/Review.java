@@ -19,7 +19,6 @@ public class Review extends AbstractEntity {
     private Movie movie;
 
 
-
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime updatedAt = LocalDateTime.now();

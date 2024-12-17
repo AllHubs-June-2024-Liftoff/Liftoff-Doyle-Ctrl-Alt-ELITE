@@ -3,71 +3,56 @@ package org.launchcode.BingeBuddy.controllers;
 import org.launchcode.BingeBuddy.data.MovieRepository;
 import org.launchcode.BingeBuddy.models.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Controller
-@RequestMapping("/movies")
+@RestController
+@RequestMapping("/api/movies")
 public class MovieController {
 
     @Autowired
-    private final MovieRepository movieRepository;
+    private MovieRepository movieRepository;
 
-    @Autowired
-    public MovieController(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
+    @GetMapping("/")
+    public String home() {
+        return "index";
     }
 
-    // Display all movies
     @GetMapping
-    public String index(Model model) {
-        model.addAttribute("movies", movieRepository.findAll());
-        return "movie-list";
+    public List<Movie> getAllMovies() {
+        return (List<Movie>) movieRepository.findAll();
     }
 
-    // Display the form to add a movie
-    @GetMapping("/add")
-    public String displayAddMovieForm(Model model, @RequestParam Movie movie) {
-        model.addAttribute("movie", new Movie());
-        return "movie-add"; // Returns the `movie-add.html` template
+    @GetMapping("/{id}")
+    public Object getMovieById(@PathVariable Long id) {
+        return movieRepository.findById(id).map(movie -> ResponseEntity.ok().body(movie));
+
     }
 
-    // Handle the form submission to add a movie
-    @PostMapping("/add")
-    public String addMovie(@ModelAttribute Movie movie) {
-        movieRepository.save(movie); // Save the movie to the database
-        return "redirect:/movies"; // Redirect to the movies index page
+    @PostMapping
+    public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
+        Movie savedMovie = movieRepository.save(movie);
+        return ResponseEntity.status(201).body(savedMovie);
     }
 
-    @GetMapping("/list")
-    public String movieList(Model model) {
-        Iterable<Movie> movies = movieRepository.findAll();
-        model.addAttribute("movies", movies);
-        return "movie-list";
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateMovie(@PathVariable Long id, @RequestBody Movie movie) {
+        if (!movieRepository.existsById(id)) {
+            return ResponseEntity.status(404).body("Movie not found");
+        }
+        movie.setId(id);
+        Movie updatedMovie = movieRepository.save(movie);
+        return ResponseEntity.ok(updatedMovie);
     }
 
-    @PostMapping("/delete/{id}")
-    public String deleteMovie(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteMovie(@PathVariable Long id) {
+        if (!movieRepository.existsById(id)) {
+            return ResponseEntity.status(404).body("Movie not found");
+        }
         movieRepository.deleteById(id);
-        return "redirect:/movies/list";
-    }
-
-    @GetMapping("/edit/{id}")
-    public String editMovie(@PathVariable Long id, Model model) {
-        Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid movie ID: " + id));
-        model.addAttribute("movie", movie);
-        return "movie-add"; // Reuse your `movie-add.html` template for editing
-    }
-
-    @PostMapping("/edit/{id}")
-    public String updateMovie(@PathVariable Long id, @ModelAttribute Movie movie) {
-        movie.setId(id); // Ensure the ID is preserved
-        movieRepository.save(movie);
-        return "redirect:/movies/list";
+        return ResponseEntity.noContent().build();
     }
 }

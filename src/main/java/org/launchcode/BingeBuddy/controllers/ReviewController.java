@@ -38,13 +38,6 @@ public class ReviewController {
         return "review";
     }
 
-//    @GetMapping("/reviews")
-//    public String showReviews(@RequestParam Long movieId, Model model) {
-//        Optional<Review> review = reviewRepository.findById(movieId);
-//        model.addAttribute("reviews", movie.getReviews()); // Pass the reviews
-//        return "reviews"; // Thymeleaf template name
-//    }
-
 
     @GetMapping("/add")
     public String displayAddReviewForm(Model model) {
@@ -126,19 +119,4 @@ public class ReviewController {
         return "review-detail";
     }
 
-//    @GetMapping("/reviews")
-//    public String showAllReviews(Model model) {
-//        List<Review> reviews = (List<Review>) reviewRepository.findAll();
-//        model.addAttribute("reviews", reviews);
-//        model.addAttribute("movies", movieRepository.findAll());
-//        return "review";
-//    }
-
-//    @Transactional
-//    public void saveReview(Review review) {
-//        Movie movie = movieRepository.findById(review.getMovie().getId())
-//                .orElseThrow(() -> new IllegalArgumentException("Invalid movie ID"));
-//        review.setMovie(movie);
-//        reviewRepository.save(review);
-//    }
 }
