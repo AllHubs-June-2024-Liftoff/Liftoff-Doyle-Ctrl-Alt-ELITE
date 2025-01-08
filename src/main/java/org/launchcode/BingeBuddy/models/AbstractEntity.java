@@ -11,9 +11,9 @@ import java.util.Objects;
 public abstract class AbstractEntity {
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -1,5 +1,7 @@
 package org.launchcode.BingeBuddy.models;
 
+import java.util.Collection;
+
 public class User extends AbstractEntity {
     private String name;
     private String email;
@@ -28,5 +30,11 @@ public class User extends AbstractEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Collection<Movie> getWatchlist() {
+
+
+        return java.util.List.of();
     }
 }

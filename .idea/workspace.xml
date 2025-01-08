@@ -5,25 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a0eb465d-5b26-4135-8798-906fb108eecf" name="Changes" comment="good">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.11.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/BingeBuddyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/BingeBuddyApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/HomeController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/MovieController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/MovieController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/ReviewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/WatchlistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/controllers/WatchlistController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/data/WatchlistRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/data/WatchlistRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/Comment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/Movie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/Movie.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/Review.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/models/Review.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/launchcode/BingeBuddy/Main.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

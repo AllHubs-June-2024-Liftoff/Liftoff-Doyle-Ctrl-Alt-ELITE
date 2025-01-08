@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CommentRepository extends CrudRepository<Comment, Long> {
+public interface CommentRepository extends CrudRepository<Comment, Integer> {
     List<Comment> findByReview(Review review);
 
-    List<Comment> findByReview_Id(Long reviewId);
+    List<Comment> findByReview_Id(Integer reviewId);
 }

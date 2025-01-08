@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ReviewRepository extends CrudRepository<Review, Long> {
-    List<Review> findByMovie_Id(Long movieId);
+public interface ReviewRepository extends CrudRepository<Review, Integer> {
+    List<Review> findByMovie_Id(Integer movieId);
 
-    Optional<Review> findById(Long movieId);
+    Optional<Review> findById(Integer movieId);
 
-    List<Review> findByMovie_IdOrderByCreatedAtDesc(Long movieId);
+    List<Review> findByMovie_IdOrderByCreatedAtDesc(Integer movieId);
 
 }

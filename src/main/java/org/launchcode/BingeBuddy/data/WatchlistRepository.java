@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface WatchlistRepository extends CrudRepository<Watchlist, Long> {
+public interface WatchlistRepository extends CrudRepository<Watchlist, Integer> {
     List<Watchlist> findByStatus(WatchlistStatus status);
+
+    public List<Watchlist> getWatchlist(Watchlist watchlist);
+
+    List<Watchlist> findAllByUserId(Integer integer);
 }
