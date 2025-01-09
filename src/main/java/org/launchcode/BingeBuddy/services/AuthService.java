@@ -53,7 +53,7 @@ public class AuthService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("movieId", movie.getId());
 
-        return jwtUtility.generateJWT(claims, user.getId().toString());
+        return jwtUtility.generateToken(claims, user.getId().toString());
     }
 
     public Movie fetchMovieFromToken(String token) {

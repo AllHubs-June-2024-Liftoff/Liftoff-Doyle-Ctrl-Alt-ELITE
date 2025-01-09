@@ -2,12 +2,11 @@ package org.launchcode.BingeBuddy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Scanner;
 
 @SpringBootApplication
+@EntityScan(basePackages = "org.launchcode.BingeBuddy.models")
 public class BingeBuddyApplication {
 
     public static void main(String[] args) {

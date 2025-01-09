@@ -13,21 +13,29 @@ import java.util.Map;
 @Component
 public class JWTUtility {
 
-    private static final String JWT = "jwt";
-    private static final long EXPIRATION_TIME = 86400000;
+    private static final String SECRET_KEY = "MySuperSecretKeyForJWTGeneration1234567890";
 
-    private final Key key = Keys.hmacShaKeyFor(JWT.getBytes());
+    private final Key key;
 
-    public String generateJWT(Map<String, Object> claims, String subject) {
+    public JWTUtility() {
+        // Initialize key
+        try {
+            this.key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Failed to initialize JWTUtility: Invalid secret key", e);
+        }
+    }
+
+    public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day expiry
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-
     }
+
     public Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -48,3 +56,4 @@ public class JWTUtility {
         return extractAllClaims(token).getExpiration().before(new Date());
     }
 }
+

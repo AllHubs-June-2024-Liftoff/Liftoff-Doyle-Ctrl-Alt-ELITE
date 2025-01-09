@@ -14,6 +14,11 @@ public class Watchlist extends AbstractEntity {
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+
     @Enumerated(EnumType.STRING) // Ensures the enum is stored as a string in the database
     @Column(nullable = false)
     private WatchlistStatus status;

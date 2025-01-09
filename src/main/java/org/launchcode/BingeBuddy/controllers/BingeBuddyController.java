@@ -1,5 +1,6 @@
 package org.launchcode.BingeBuddy.controllers;
 
+import jakarta.validation.Valid;
 import org.launchcode.BingeBuddy.models.Comment;
 import org.launchcode.BingeBuddy.models.Movie;
 import org.launchcode.BingeBuddy.models.Review;
@@ -13,9 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/")
 public class BingeBuddyController {
 
     @Autowired
@@ -27,7 +29,10 @@ public class BingeBuddyController {
     @Autowired
     private JWTUtility jwtUtility;
 
-
+@GetMapping("/")
+public String index() {
+    return "BingeBuddy";
+}
     // Movies
     @GetMapping("/movies/{apiId}")
     public ResponseEntity<Movie> getMovieByApiId(@PathVariable String apiId) {
@@ -37,6 +42,16 @@ public class BingeBuddyController {
         }
         return ResponseEntity.ok(movie);
     }
+
+    @PostMapping("/movies/details")
+    public ResponseEntity<Movie> postMovieDetails(@RequestParam String apiId) {
+        Movie movie = apiService.fetchMovie(apiId);
+        if (movie == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(movie);
+    }
+
 
     @PostMapping("/movies/associate")
     public ResponseEntity<String> associateMovieWithUser(@RequestParam String apiId, @RequestParam String userId) {
@@ -66,7 +81,7 @@ public class BingeBuddyController {
 
     // Comments
     @PostMapping("/comments")
-    public ResponseEntity<Comment> addComment(@RequestBody Comment comment) {
+    public ResponseEntity<Comment> addComment(@Valid @RequestBody Comment comment) {
         // Add logic to save comment associated with a review
         if (comment == null || comment.getReview() == null) {
             return ResponseEntity.badRequest().build();
@@ -94,5 +109,21 @@ public class BingeBuddyController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(watchlist);
+    }
+
+    @GetMapping("/movies/random")
+    public ResponseEntity<Movie> getRandomMovie() {
+        // Example random titles
+        String[] randomTitles = {"Matrix", "Avengers", "Forrest Gump", "Inception", "Titanic"};
+        String randomTitle = randomTitles[new Random().nextInt(randomTitles.length)];
+
+        List<Movie> movies = apiService.searchMoviesByTitle(randomTitle);
+        if (movies.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Return the first movie (or pick randomly from results)
+        Movie randomMovie = movies.get(0);
+        return ResponseEntity.ok(randomMovie);
     }
 }
