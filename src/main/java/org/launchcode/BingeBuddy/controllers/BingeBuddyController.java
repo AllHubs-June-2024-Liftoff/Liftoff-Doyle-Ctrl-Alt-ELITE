@@ -29,7 +29,7 @@ public class BingeBuddyController {
     @Autowired
     private JWTUtility jwtUtility;
 
-@GetMapping("/")
+@GetMapping
 public String index() {
     return "BingeBuddy";
 }
