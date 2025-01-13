@@ -22,10 +22,10 @@ public class APIService {
     @Value("${external.api.key}")
     private String apiKey;
 
-    public Movie fetchMovie(String apiId){
-       RestTemplate restTemplate = new RestTemplate();
-       String url = apiUrl + "?apikey=" + apiKey + "&id=" + apiId;
-       return restTemplate.getForObject(url, Movie.class);
+    public Movie fetchMovie(String apiId) {
+        RestTemplate restTemplate = new RestTemplate();
+        String url = apiUrl + "?apikey=" + apiKey + "&id=" + apiId;
+        return restTemplate.getForObject(url, Movie.class);
     }
 
     public List<Movie> searchMoviesByTitle(String title) {

@@ -29,10 +29,6 @@ public class BingeBuddyController {
     @Autowired
     private JWTUtility jwtUtility;
 
-@GetMapping
-public String index() {
-    return "BingeBuddy";
-}
     // Movies
     @GetMapping("/movies/{apiId}")
     public ResponseEntity<Movie> getMovieByApiId(@PathVariable String apiId) {
@@ -111,7 +107,7 @@ public String index() {
         return ResponseEntity.ok(watchlist);
     }
 
-    @GetMapping("/movies/random")
+    @GetMapping("/")
     public ResponseEntity<Movie> getRandomMovie() {
         // Example random titles
         String[] randomTitles = {"Matrix", "Avengers", "Forrest Gump", "Inception", "Titanic"};

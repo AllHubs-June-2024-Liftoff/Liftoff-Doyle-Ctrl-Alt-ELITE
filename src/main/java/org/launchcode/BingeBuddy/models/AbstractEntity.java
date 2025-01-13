@@ -43,5 +43,11 @@ public abstract class AbstractEntity {
 
     protected void add(Review review) {
     }
+
+    public void setEmail(String email) {
+    }
+
+    public void setAnotherGenre(String anotherGenre) {
+    }
 }
 

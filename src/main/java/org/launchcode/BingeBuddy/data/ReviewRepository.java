@@ -10,10 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
-    List<Review> findByMovie_Id(Integer movieId);
-
-    Optional<Review> findById(Integer movieId);
-
-    List<Review> findByMovie_IdOrderByCreatedAtDesc(Integer movieId);
 
 }

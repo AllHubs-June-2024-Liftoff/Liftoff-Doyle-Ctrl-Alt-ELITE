@@ -1,8 +1,6 @@
 package org.launchcode.BingeBuddy.services;
 
-import org.launchcode.BingeBuddy.data.MovieRepository;
-import org.launchcode.BingeBuddy.data.UserRepository;
-import org.launchcode.BingeBuddy.data.WatchlistRepository;
+import org.launchcode.BingeBuddy.data.*;
 import org.launchcode.BingeBuddy.models.*;
 import org.launchcode.BingeBuddy.utils.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -29,11 +28,18 @@ public class AuthService {
 
     @Autowired
     private APIService apiService;
+    @Autowired
+    private ReviewRepository reviewRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
     public String associateMovieWithUser(String apiId, String userId) {
         // Fetch user by ID
-        User user = userRepository.findById(Integer.parseInt(userId))
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        Optional<User> user = userRepository.findById(Integer.parseInt(userId));
+        if(user == null) {
+            throw new RuntimeException("User not found");
+        }
+                ;
 
         // Fetch movie by API ID or add to repository
         Movie movie = movieRepository.findByApiId(apiId)
@@ -53,7 +59,7 @@ public class AuthService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("movieId", movie.getId());
 
-        return jwtUtility.generateToken(claims, user.getId().toString());
+        return jwtUtility.generateToken(claims, user.get().toString());
     }
 
     public Movie fetchMovieFromToken(String token) {
@@ -66,13 +72,14 @@ public class AuthService {
     }
 
     public Review addReview(Review review) {
-        // Logic to save review (implement as needed)
-        return review;
+
+        return reviewRepository.save(review);
     }
 
     public Comment addComment(Comment comment) {
         // Logic to save comment (implement as needed)
-        return comment;
+
+        return commentRepository.save(comment);
     }
 
     public Watchlist addToWatchlist(Watchlist watchlist) {

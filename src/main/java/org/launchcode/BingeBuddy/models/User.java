@@ -3,43 +3,45 @@ package org.launchcode.BingeBuddy.models;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
-import java.util.Collection;
-
 @Entity
 @Table(name = "users")
 public class User extends AbstractEntity {
-    private String name;
-    private String email;
+    private String username;
+    private String firstName;
+    private String lastName;
+    private String genre;
+    private String genre2;
 
-    public User(Long id, String name, String email) {
+
+
+    public User(Integer id, String username) {
         this();
-        this.name = name;
-        this.email = email;
+        this.username = username;
+
     }
 
     public User() {
     }
-    // Getters and Setters
 
-    public String getName() {
-        return name;
-    }
+    public String getUsername() {return username;}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setUsername(String username) {this.username = username;}
 
-    public String getEmail() {
-        return email;
-    }
+    public String getFirstName() {return firstName;}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public void setFirstName(String firstName) {this.firstName = firstName;}
 
-    public Collection<Movie> getWatchlist() {
+    public String getLastName() {return lastName;}
+
+    public void setLastName(String lastName) {this.lastName = lastName;}
+
+    public String getGenre() {return genre;}
+
+    public void setGenre(String genre) {this.genre = genre;}
+
+    public String getGenre2() {return genre2;}
+
+    public void setGenre2(String genre2) {this.genre2 = genre2;}
 
 
-        return java.util.List.of();
-    }
 }

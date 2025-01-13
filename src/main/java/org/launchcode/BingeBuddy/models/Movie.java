@@ -31,6 +31,7 @@ public class Movie extends AbstractEntity {
 
     @Column(nullable = true)
     @Size(min = 3, max = 500, message = "Location must be between 3 and 150 characters")
+    @JsonProperty("Description")
     private String description;
 
     @Column(nullable = true)
@@ -93,7 +94,6 @@ public class Movie extends AbstractEntity {
     public void setTitle(String title) {
         this.title = title;
     }
-
 
 
     public String getYear() {
