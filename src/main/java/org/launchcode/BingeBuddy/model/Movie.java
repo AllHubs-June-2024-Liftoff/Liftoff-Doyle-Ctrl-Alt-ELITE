@@ -59,12 +59,12 @@ public class Movie extends AbstractEntity {
     public Movie(String title, int rating, String type, String imdbId, String releaseDate, String description, String posterUrl, String apiId) {
         this.title = title;
         this.rating = rating;
-        this.type = type;
+        //this.type = type;
         this.imdbId = imdbId;
-        this.year = releaseDate;
-        this.description = description;
+        //this.year = releaseDate;
+        //this.description = description;
         this.poster = posterUrl;
-        this.apiId = apiId;
+        //this.apiId = apiId;
 
     }
 

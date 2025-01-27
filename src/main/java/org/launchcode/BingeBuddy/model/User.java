@@ -9,8 +9,8 @@ public class User extends AbstractEntity {
     private String username;
     private String firstName;
     private String lastName;
-    private String genre;
-    private String anotherGenre;
+    //private String genre;
+    //private String anotherGenre;
 
 
 
@@ -35,13 +35,13 @@ public class User extends AbstractEntity {
 
     public void setLastName(String lastName) {this.lastName = lastName;}
 
-    public String getGenre() {return genre;}
+    //public String getGenre() {return genre;}
 
-    public void setGenre(String genre) {this.genre = genre;}
+    //public void setGenre(String genre) {this.genre = genre;}
 
-    public String getAnotherGenre() {return anotherGenre;}
+    //public String getAnotherGenre() {return anotherGenre;}
 
-    public void setAnotherGenre(String anotherGenre) {this.anotherGenre = anotherGenre;}
+   // public void setAnotherGenre(String anotherGenre) {this.anotherGenre = anotherGenre;}
 
 
 }

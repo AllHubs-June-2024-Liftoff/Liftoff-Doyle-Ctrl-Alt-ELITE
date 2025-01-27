@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.List;
 
@@ -41,11 +42,18 @@ public class UserController {
         }
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return ResponseEntity.ok(users);
+    @GetMapping("/search/{searchTerm}")
+    public ResponseEntity<List<User>> getAllUsers(@PathVariable String searchTerm) {
+        List<User> iResults = userRepository.findAll();
+        ArrayList<User> results = new ArrayList<>();
+        for (int i = 0; i < iResults.size(); i++) {
+            if (iResults.get(i).getUsername() != null && iResults.get(i).getUsername().contains(searchTerm)) {
+                results.add(iResults.get(i));
+            }
+        }
+        return ResponseEntity.ok(results);
     }
+
 
     @PostMapping("/add-test-user")
     public ResponseEntity<String> addTestUser() {
@@ -56,8 +64,8 @@ public class UserController {
             testUser.setUsername("testuser");
             testUser.setFirstName("Test");
             testUser.setLastName("User");
-            testUser.setGenre("Action");
-            testUser.setAnotherGenre("Comedy");
+            //testUser.setGenre("Action");
+           // testUser.setAnotherGenre("Comedy");
 
             userRepository.save(testUser);
             return ResponseEntity.ok("Test user added with ID " + testUser.getId());
@@ -81,8 +89,8 @@ public class UserController {
             if (username != null) user.setUsername(username);
             if (firstName != null) user.setFirstName(firstName);
             if (lastName != null) user.setLastName(lastName);
-            if (genre != null) user.setGenre(genre);
-            if (anotherGenre != null) user.setAnotherGenre(anotherGenre);
+            //if (genre != null) user.setGenre(genre);
+            //if (anotherGenre != null) user.setAnotherGenre(anotherGenre);
 
             userRepository.save(user);
             return ResponseEntity.ok(user);

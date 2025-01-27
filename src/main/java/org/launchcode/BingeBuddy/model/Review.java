@@ -14,9 +14,15 @@ public class Review extends AbstractEntity {
 
     private int rating;
 
+
+
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
+
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user;
 
 
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -63,5 +69,13 @@ public class Review extends AbstractEntity {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+//    public User getUser() {
+//        return user;
+//    }
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
 }
 
