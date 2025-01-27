@@ -1,4 +1,5 @@
 import {useState } from "react";
+import axios, { Axios } from "axios";
 import AddToListButton from "./AddToListButton";
 
 
@@ -41,8 +42,9 @@ export default function SearchMovie() {
         sMovies=[];
       })
     }
-    fetchData()
-  }
+    fetchData() 
+    }
+  
 
   return(
     <div>
