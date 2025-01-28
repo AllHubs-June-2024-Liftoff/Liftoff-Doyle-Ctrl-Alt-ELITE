@@ -2,15 +2,11 @@ package org.launchcode.BingeBuddy.controller;
 
 
 import org.launchcode.BingeBuddy.data.UserRepository;
-import org.launchcode.BingeBuddy.model.LoginRequest;
 import org.launchcode.BingeBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.List;
 
@@ -23,47 +19,26 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> registerUser(@RequestParam String email,
-                                                            @RequestParam(required = false) String username,
-                                                            @RequestParam(required = false) String firstName,
-                                                            @RequestParam(required = false) String lastName) {
-        // Create a new user entity
-        User newUser = new User();
-        newUser.setEmail(email);
-        newUser.setUsername(username != null ? username : email); // Default username to email if not provided
-        newUser.setFirstName(firstName);
-        newUser.setLastName(lastName);
-
-
-        User savedUser = userRepository.save(newUser);
-
-        // Return user ID and success message
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "User registered successfully.");
-        response.put("userId", savedUser.getId());
-
-        return ResponseEntity.ok(response);
+    public ResponseEntity<User> registerNewUser(@RequestBody User user) {
+        User newUser = userRepository.save(user);
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/userdetails")
-    public ResponseEntity<String> addUserDetails(@RequestParam Integer userId,
-                                                 @RequestParam(required = false) String genre,
-                                                 @RequestParam(required = false) String anotherGenre) {
-        // Fetch the user by ID
-        Optional<User> userOptional = userRepository.findById(userId);
+    public ResponseEntity<User> addUserDetails(@RequestBody User user) {
+        Optional<User> userOptional = userRepository.findById(user.getId());
         if (userOptional.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found.");
+            return ResponseEntity.badRequest().body(null);
         }
 
-        // Update user details
-        User user = userOptional.get();
-        if (genre != null) user.setGenre(genre);
-        if (anotherGenre != null) user.setAnotherGenre(anotherGenre);
+        User userAddGenre = userOptional.get();
+        if (user.getGenre() != null) user.setGenre(user.getGenre());
+        if (user.getAnotherGenre() != null) user.setAnotherGenre(user.getAnotherGenre());
 
-        // Save the updated user
-        userRepository.save(user);
 
-        return ResponseEntity.ok("User details updated successfully.");
+        User updatedUser = userRepository.save(userAddGenre);
+
+        return ResponseEntity.ok(updatedUser);
     }
 
 
@@ -83,49 +58,28 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @PostMapping("/add-test-user")
-    public ResponseEntity<String> addTestUser() {
-        Optional<User> existingUser = userRepository.findById(1);
-        if (existingUser.isEmpty()) {
-            User testUser = new User();
-            testUser.setEmail("test@example.com");
-            testUser.setUsername("testuser");
-            testUser.setFirstName("Test");
-            testUser.setLastName("User");
-            testUser.setGenre("Action");
-            testUser.setAnotherGenre("Comedy");
-
-            userRepository.save(testUser);
-            return ResponseEntity.ok("Test user added with ID " + testUser.getId());
-        } else {
-            return ResponseEntity.ok("Test user already exists at ID 1");
-        }
-    }
 
     @PutMapping("update/{userId}")
     public ResponseEntity<User> updateUserDetails(@PathVariable Integer userId,
-                                                  @RequestParam(required = false) String email,
-                                                  @RequestParam(required = false) String username,
-                                                  @RequestParam(required = false) String firstName,
-                                                  @RequestParam(required = false) String lastName,
-                                                  @RequestParam(required = false) String genre,
-                                                  @RequestParam(required = false) String anotherGenre) {
+                                                  @RequestBody User user) {
         Optional<User> existingUser = userRepository.findById(userId);
-        if (existingUser.isPresent()) {
-            User user = existingUser.get();
-            if (email != null) user.setEmail(email);
-            if (username != null) user.setUsername(username);
-            if (firstName != null) user.setFirstName(firstName);
-            if (lastName != null) user.setLastName(lastName);
-            if (genre != null) user.setGenre(genre);
-            if (anotherGenre != null) user.setAnotherGenre(anotherGenre);
-
-            userRepository.save(user);
-            return ResponseEntity.ok(user);
-        } else {
+        if (existingUser.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
+        User findUser = existingUser.get();
+
+        if (user.getUsername() != null) findUser.setUsername(user.getUsername());
+        if (user.getFirstName() != null) findUser.setFirstName(user.getFirstName());
+        if (user.getLastName() != null) findUser.setLastName(user.getLastName());
+        if (user.getGenre() != null) findUser.setGenre(user.getGenre());
+        if (user.getAnotherGenre() != null) findUser.setAnotherGenre(user.getAnotherGenre());
+
+        User updatedUser = userRepository.save(findUser);
+
+        return ResponseEntity.ok(updatedUser);
     }
+
 
     @DeleteMapping("/delete")
     public ResponseEntity<User> deleteUserById(@PathVariable Integer userId) {
@@ -138,14 +92,11 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<User> searchUserByEmailOrUsername(
-            @RequestParam(required = false) String email,
+    public ResponseEntity<User> searchUserByUsername(
             @RequestParam(required = false) String username) {
         Optional<User> user;
 
-        if (email != null) {
-            user = userRepository.findByEmail(email);
-        } else if (username != null) {
+        if (username != null) {
             user = userRepository.findByUsername(username);
         } else {
             return ResponseEntity.badRequest().body(null);
@@ -154,10 +105,6 @@ public class UserController {
         return user.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-
-
-
-
 
 
 }

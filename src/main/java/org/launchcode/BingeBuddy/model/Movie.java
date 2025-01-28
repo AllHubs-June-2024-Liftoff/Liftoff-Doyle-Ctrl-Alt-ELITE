@@ -3,6 +3,7 @@ package org.launchcode.BingeBuddy.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -22,17 +23,9 @@ public class Movie extends AbstractEntity {
     @JsonProperty("Type")
     private String type;
 
-//    @JsonProperty("imdbId")
-//    private String imdbId;
-
     @Column(nullable = true)
     @JsonProperty("Year")
     private String year;
-
-//    @Column(nullable = true)
-//    @Size(min = 3, max = 500, message = "Location must be between 3 and 150 characters")
-//    @JsonProperty("Description")
-//    private String description;
 
     @Column(nullable = true)
     @JsonProperty("Poster")
@@ -40,36 +33,26 @@ public class Movie extends AbstractEntity {
 
     @InternalApi
     @Column(nullable = true, unique = true)
-    private String apiId; // External API identifier (e.g., TheTVDB ID)
+    private String apiId;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Review> reviews = new ArrayList<>(); // Association with reviews
-
-//    public String getImdbId() {
-//        return imdbId;
-//    }
-//
-//    public void setImdbId(String imdbId) {
-//        this.imdbId = imdbId;
-//    }
+    @JsonManagedReference
+    private List<Review> reviews = new ArrayList<>();
 
     public Movie() {
 
     }
 
-    public Movie(String title, int rating, String type, String imdbId, String releaseDate, String description, String posterUrl, String apiId) {
+    public Movie(String title, int rating, String type, String releaseDate, String posterUrl, String apiId) {
         this.title = title;
         this.rating = rating;
         this.type = type;
-//        this.imdbId = imdbId;
         this.year = releaseDate;
-//        this.description = description;
         this.poster = posterUrl;
         this.apiId = apiId;
 
     }
 
-    // Getters and Setters
     public String getType() {
         return type;
     }
@@ -94,7 +77,6 @@ public class Movie extends AbstractEntity {
         this.title = title;
     }
 
-
     public String getYear() {
         return year;
     }
@@ -102,14 +84,6 @@ public class Movie extends AbstractEntity {
     public void setYear(String releaseYear) {
         this.year = releaseYear;
     }
-
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
 
     public String getPoster() {
         return poster;

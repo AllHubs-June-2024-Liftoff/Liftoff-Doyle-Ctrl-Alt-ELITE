@@ -4,8 +4,10 @@ package org.launchcode.BingeBuddy.controller;
 import org.launchcode.BingeBuddy.config.APIConfiguration;
 import org.launchcode.BingeBuddy.data.*;
 import org.launchcode.BingeBuddy.model.*;
+import org.launchcode.BingeBuddy.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -14,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/")
@@ -96,7 +99,7 @@ public class BingeBuddyController {
     @PostMapping("/watchlist")
     public ResponseEntity<String> addToWatchlist(
             @RequestParam String apiId,
-            @RequestParam Integer userId,
+            @RequestBody User currentUser,
             @RequestParam WatchlistStatus status,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate scheduledDate) {
 
@@ -117,7 +120,7 @@ public class BingeBuddyController {
         }
 
 
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> user = userRepository.findById(currentUser.getId());
         if (user.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found. Please provide a valid user ID.");
         }
@@ -159,7 +162,7 @@ public class BingeBuddyController {
     @PostMapping("/review/{movieId}")
     public ResponseEntity<String> createReview(
             @PathVariable Integer movieId,
-            @RequestParam Integer userId,
+            @RequestBody User currentUser,
             @RequestBody Review review) {
 
         Optional<Movie> movie = movieRepository.findById(movieId);
@@ -167,7 +170,7 @@ public class BingeBuddyController {
             return ResponseEntity.badRequest().body("Movie not found.");
         }
 
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> user = userRepository.findById(currentUser.getId());
         if (user.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found.");
         }
@@ -186,14 +189,27 @@ public class BingeBuddyController {
 
 
     @GetMapping("/review")
-    public ResponseEntity<List<Review>> getReviews(@RequestParam Integer movieId) {
+    public ResponseEntity<?> getReviews(@RequestParam Integer movieId) {
         List<Review> reviews = reviewRepository.findByMovieId(movieId);
-        return ResponseEntity.ok(reviews);
+
+
+        List<ReviewDTO> response = reviews.stream()
+                .map(review -> new ReviewDTO(
+                        review.getId(),
+                        review.getContent(),
+                        review.getRating(),
+                        review.getUser().getUsername()
+                ))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
     @GetMapping("review/{reviewId}")
-    public ResponseEntity<Review> getReviewById(@PathVariable Integer reviewId) {
+    public ResponseEntity<Review> getReviewById(@PathVariable Integer reviewId, @PathVariable Integer userId) {
+        Optional<User> user = userRepository.findById(userId);
+        user.get();
         Optional<Review> review = reviewRepository.findById(reviewId);
         return review.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

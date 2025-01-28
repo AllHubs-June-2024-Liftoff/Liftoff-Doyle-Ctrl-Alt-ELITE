@@ -1,5 +1,6 @@
 package org.launchcode.BingeBuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -29,15 +30,28 @@ public class Review extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
+    @JsonBackReference
     private Movie movie;
 
-@Column
+    @Column
     private String apiId;
 
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    public Review(Movie movie, User user, String content, int rating, String apiId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.movie = movie;
+        this.user = user;
+        this.content = content;
+        this.rating = rating;
+        this.apiId = apiId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Review() {}
 
     public String getContent() {
         return content;
