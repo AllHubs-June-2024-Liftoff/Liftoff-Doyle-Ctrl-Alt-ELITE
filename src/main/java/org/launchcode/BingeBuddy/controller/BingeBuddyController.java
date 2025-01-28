@@ -43,7 +43,7 @@ public class BingeBuddyController {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @GetMapping
-    public String homePage(){
+    public String homePage() {
         return "BingeBuddy";
     }
 
@@ -185,7 +185,6 @@ public class BingeBuddyController {
 
         return ResponseEntity.ok("Review created successfully.");
     }
-
 
 
     @GetMapping("/review")

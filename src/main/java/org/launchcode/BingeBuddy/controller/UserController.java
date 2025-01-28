@@ -4,6 +4,7 @@ package org.launchcode.BingeBuddy.controller;
 import org.launchcode.BingeBuddy.data.UserRepository;
 import org.launchcode.BingeBuddy.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,20 +21,27 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> registerNewUser(@RequestBody User user) {
+        if (user.getUsername() == null) {
+            return ResponseEntity.badRequest().body(null);
+        }
         User newUser = userRepository.save(user);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(newUser);
     }
 
     @PostMapping("/userdetails")
     public ResponseEntity<User> addUserDetails(@RequestBody User user) {
-        Optional<User> userOptional = userRepository.findById(user.getId());
-        if (userOptional.isEmpty()) {
+        if (user.getId() == null) {
             return ResponseEntity.badRequest().body(null);
         }
 
+        Optional<User> userOptional = userRepository.findById(user.getId());
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         User userAddGenre = userOptional.get();
-        if (user.getGenre() != null) user.setGenre(user.getGenre());
-        if (user.getAnotherGenre() != null) user.setAnotherGenre(user.getAnotherGenre());
+        if (user.getGenre() != null) userAddGenre.setGenre(user.getGenre());
+        if (user.getAnotherGenre() != null) userAddGenre.setAnotherGenre(user.getAnotherGenre());
 
 
         User updatedUser = userRepository.save(userAddGenre);
@@ -44,12 +52,10 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable Integer userId) {
+
         Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            return ResponseEntity.ok(user.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/all")
@@ -81,29 +87,21 @@ public class UserController {
     }
 
 
-    @DeleteMapping("/delete")
-    public ResponseEntity<User> deleteUserById(@PathVariable Integer userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isPresent()) {
-            userRepository.delete(user.get());
-            return ResponseEntity.ok(user.get());
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<String> deleteUserById(@PathVariable Integer userId) {
+        if (!userRepository.existsById(userId)) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        userRepository.deleteById(userId);
+        return ResponseEntity.ok("User deleted successfully.");
     }
 
     @GetMapping("/search")
-    public ResponseEntity<User> searchUserByUsername(
-            @RequestParam(required = false) String username) {
-        Optional<User> user;
-
-        if (username != null) {
-            user = userRepository.findByUsername(username);
-        } else {
-            return ResponseEntity.badRequest().body(null);
-        }
-
-        return user.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<?> searchUserByUsername(@RequestParam String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        return user.<ResponseEntity<?>>map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("User not found."));
     }
 
 
