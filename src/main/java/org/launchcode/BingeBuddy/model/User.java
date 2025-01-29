@@ -6,6 +6,8 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User extends AbstractEntity {
+
+
     private String username;
     private String firstName;
     private String lastName;

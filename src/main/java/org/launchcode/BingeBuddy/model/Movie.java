@@ -18,7 +18,7 @@ public class Movie extends AbstractEntity {
     @JsonProperty("Title")
     private String title;
 
-    private int rating;
+
 
     @JsonProperty("Type")
     private String type;
@@ -43,9 +43,9 @@ public class Movie extends AbstractEntity {
 
     }
 
-    public Movie(String title, int rating, String type, String releaseDate, String posterUrl, String apiId) {
+    public Movie(String title, String type, String releaseDate, String posterUrl, String apiId) {
         this.title = title;
-        this.rating = rating;
+
         this.type = type;
         this.year = releaseDate;
         this.poster = posterUrl;
@@ -61,13 +61,6 @@ public class Movie extends AbstractEntity {
         this.type = type;
     }
 
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
 
     public String getTitle() {
         return title;

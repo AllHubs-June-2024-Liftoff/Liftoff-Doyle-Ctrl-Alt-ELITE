@@ -22,7 +22,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<User> registerNewUser(@RequestBody User user) {
         if (user.getUsername() == null) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.notFound().build();
         }
         User newUser = userRepository.save(user);
         return ResponseEntity.ok(newUser);
@@ -31,7 +31,7 @@ public class UserController {
     @PostMapping("/userdetails")
     public ResponseEntity<User> addUserDetails(@RequestBody User user) {
         if (user.getId() == null) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.notFound().build();
         }
 
         Optional<User> userOptional = userRepository.findById(user.getId());
@@ -66,8 +66,7 @@ public class UserController {
 
 
     @PutMapping("update/{userId}")
-    public ResponseEntity<User> updateUserDetails(@PathVariable Integer userId,
-                                                  @RequestBody User user) {
+    public ResponseEntity<User> updateUserDetails(@PathVariable Integer userId, @RequestBody User user) {
         Optional<User> existingUser = userRepository.findById(userId);
         if (existingUser.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -99,9 +98,7 @@ public class UserController {
     @GetMapping("/search")
     public ResponseEntity<?> searchUserByUsername(@RequestParam String username) {
         Optional<User> user = userRepository.findByUsername(username);
-        return user.<ResponseEntity<?>>map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("User not found."));
+        return user.<ResponseEntity<?>>map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found."));
     }
 
 
