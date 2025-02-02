@@ -1,5 +1,6 @@
 package org.launchcode.BingeBuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -14,6 +15,7 @@ public class User extends AbstractEntity {
     private String genre;
     private String anotherGenre;
 
+@JsonIgnore
     private String password;
 
 

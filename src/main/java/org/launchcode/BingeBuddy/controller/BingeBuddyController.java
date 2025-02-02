@@ -1,11 +1,11 @@
 package org.launchcode.BingeBuddy.controller;
 
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.launchcode.BingeBuddy.config.APIConfiguration;
 import org.launchcode.BingeBuddy.data.*;
 import org.launchcode.BingeBuddy.dto.CommentDTO;
 import org.launchcode.BingeBuddy.dto.MovieReviewDTO;
+import org.launchcode.BingeBuddy.dto.WatchlistDTO;
 import org.launchcode.BingeBuddy.model.*;
 import org.launchcode.BingeBuddy.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,44 +25,48 @@ import java.util.stream.Collectors;
 @RequestMapping("/")
 public class BingeBuddyController {
 
-    @Autowired
-    private CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
+    private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
+    private final MovieRepository movieRepository;
+    private final WatchlistRepository watchlistRepository;
+    private final APIConfiguration apiConfig;
+    private final RestTemplate restTemplate;
 
-    @Autowired
-    private ReviewRepository reviewRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private MovieRepository movieRepository;
-
-    @Autowired
-    private WatchlistRepository watchlistRepository;
-
-    @Autowired
-    private APIConfiguration apiConfig;
-
-    private final RestTemplate restTemplate = new RestTemplate();
+    public BingeBuddyController(
+            CommentRepository commentRepository,
+            ReviewRepository reviewRepository,
+            UserRepository userRepository,
+            MovieRepository movieRepository,
+            WatchlistRepository watchlistRepository,
+            APIConfiguration apiConfig
+    ) {
+        this.commentRepository = commentRepository;
+        this.reviewRepository = reviewRepository;
+        this.userRepository = userRepository;
+        this.movieRepository = movieRepository;
+        this.watchlistRepository = watchlistRepository;
+        this.apiConfig = apiConfig;
+        this.restTemplate = new RestTemplate();
+    }
 
     @GetMapping
     public String homePage(){
         return "BingeBuddy";
     }
-
-    @GetMapping("/dashboard/{userId}")
-    public ResponseEntity<UserDashboard> getDashboard(@PathVariable Integer userId) {
+    @GetMapping("/user-dashboard/{userId}")
+    public ResponseEntity<?> getUserDashboard(@PathVariable Integer userId) {
         Optional<User> user = userRepository.findById(userId);
-
-        if (user.isPresent()) {
-            UserDashboard dashboard = new UserDashboard();
-            dashboard.setUser(user.get());
-            dashboard.setWatchlist(watchlistRepository.findByUser_Id(userId));
-            dashboard.setReviews(reviewRepository.findByUser_Id(userId));
-            return ResponseEntity.ok(dashboard);
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.notFound().build();
+        UserDashboard response = new UserDashboard();
+        response.setUser(user.get());
+        response.setWatchlist(watchlistRepository.findByUser_Id(userId));
+        response.setReviews(reviewRepository.findByUser_Id(userId));
+
+        return ResponseEntity.ok(response);
     }
 
 
@@ -81,25 +85,30 @@ public class BingeBuddyController {
 
     @GetMapping("/movie")
     public ResponseEntity<?> getMovieByApiId(@RequestParam String apiId) {
-        Optional<Movie> movie = movieRepository.findByApiId(apiId);
+        Optional<Movie> movieOpt = movieRepository.findByApiId(apiId);
 
-        if (movie.isEmpty()) {
+        if (movieOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found.");
         }
 
-        List<ReviewDTO> reviewDTOs = movie.get().getReviews().stream()
+        Movie movie = movieOpt.get();
+        String posterUrl = movie.getPoster();
+
+        List<ReviewDTO> reviewDTOs = movie.getReviews().stream()
                 .map(review -> new ReviewDTO(
                         review.getId(),
                         review.getContent(),
                         review.getRating(),
-                        review.getUser().getUsername()
+                        review.getUser().getUsername(),
+                        posterUrl
                 ))
                 .collect(Collectors.toList());
 
-        MovieReviewDTO movieReviewDTO = new MovieReviewDTO(movie.get(), reviewDTOs);
+        MovieReviewDTO movieReviewDTO = new MovieReviewDTO(movie, reviewDTOs);
 
         return ResponseEntity.ok(movieReviewDTO);
     }
+
 
 
 
@@ -144,17 +153,30 @@ public class BingeBuddyController {
 
 
 
-    @GetMapping("/watchlist/{watchlistId}")
-    public ResponseEntity<Watchlist> getWatchlist(@PathVariable Integer watchlistId) {
-        return watchlistRepository.findById(watchlistId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+
+    @GetMapping("/watchlist/user/{userId}")
+    public ResponseEntity<List<WatchlistDTO>> getWatchlistByUser(@PathVariable Integer userId) {
+        List<Watchlist> watchlists = watchlistRepository.findByUser_Id(userId);
+        if (watchlists.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<WatchlistDTO> watchlistDTOs = watchlists.stream()
+                .map(watchlist -> new WatchlistDTO(
+                        watchlist.getId(),
+                        watchlist.getMovie().getTitle(),
+                        watchlist.getMovie().getPoster(),
+                        watchlist.getScheduledDate(),
+                        watchlist.getStatus().toString()
+                ))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(watchlistDTOs);
     }
 
 
 
     @DeleteMapping("/watchlist/{watchlistId}")
-    public ResponseEntity<String> removeFromWatchlist(@RequestParam Integer watchlistId) {
+    public ResponseEntity<String> removeFromWatchlist(@PathVariable Integer watchlistId) {
         Optional<Watchlist> watchlistEntry = watchlistRepository.findById(watchlistId);
         if (watchlistEntry.isPresent()) {
             watchlistRepository.delete(watchlistEntry.get());
@@ -196,30 +218,55 @@ public class BingeBuddyController {
 
     @GetMapping("/review")
     public ResponseEntity<List<ReviewDTO>> getReviews(@RequestParam Integer movieId) {
+        // Fetch the movie by ID
+        Optional<Movie> movie = movieRepository.findById(movieId);
+        if (movie.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Get the poster URL from the Movie entity
+        String posterUrl = movie.get().getPoster();
+
+        // Fetch reviews for the given movie and map them to ReviewDTO
         List<ReviewDTO> response = reviewRepository.findByMovieId(movieId).stream()
                 .map(review -> new ReviewDTO(
                         review.getId(),
                         review.getContent(),
                         review.getRating(),
-                        review.getUser().getUsername()
+                        review.getUser().getUsername(),
+                        posterUrl
                 ))
                 .collect(Collectors.toList());
+
 
         return ResponseEntity.ok(response);
     }
 
+
+
     @GetMapping("review/{reviewId}")
     public ResponseEntity<ReviewDTO> getReviewById(@PathVariable Integer reviewId) {
-        return reviewRepository.findById(reviewId)
-                .map(review -> new ReviewDTO(
-                        review.getId(),
-                        review.getContent(),
-                        review.getRating(),
-                        review.getUser().getUsername()
-                ))
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Optional<Review> reviewOpt = reviewRepository.findById(reviewId);
+
+        if (reviewOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Review review = reviewOpt.get();
+        Movie movie = review.getMovie();
+        String posterUrl = (movie != null) ? movie.getPoster() : null;
+
+        ReviewDTO reviewDTO = new ReviewDTO(
+                review.getId(),
+                review.getContent(),
+                review.getRating(),
+                review.getUser().getUsername(),
+                posterUrl
+        );
+
+        return ResponseEntity.ok(reviewDTO);
     }
+
 
 
 

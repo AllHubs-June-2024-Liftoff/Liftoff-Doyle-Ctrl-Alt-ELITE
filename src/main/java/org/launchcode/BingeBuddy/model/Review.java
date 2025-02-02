@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 public class Review extends AbstractEntity {
 
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -33,10 +32,6 @@ public class Review extends AbstractEntity {
     @JsonBackReference
     private Movie movie;
 
-    @Column
-    private String apiId;
-
-
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime updatedAt = LocalDateTime.now();
@@ -46,7 +41,6 @@ public class Review extends AbstractEntity {
         this.user = user;
         this.content = content;
         this.rating = rating;
-        this.apiId = apiId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -94,12 +88,6 @@ public class Review extends AbstractEntity {
         this.updatedAt = updatedAt;
     }
 
-    public String getApiId() {
-        return apiId;
-    }
 
-    public void setApiId(String apiId) {
-        this.apiId = apiId;
-    }
 }
 

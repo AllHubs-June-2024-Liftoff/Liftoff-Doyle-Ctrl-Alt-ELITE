@@ -2,10 +2,13 @@ package org.launchcode.BingeBuddy.controller;
 
 
 import org.launchcode.BingeBuddy.data.UserRepository;
+import org.launchcode.BingeBuddy.model.LoginRequest;
 import org.launchcode.BingeBuddy.model.User;
+import org.launchcode.BingeBuddy.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -15,17 +18,36 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+        private final UserRepository userRepository;
+        private final UserService userService;
+        private final BCryptPasswordEncoder passwordEncoder;
 
-
-    @PostMapping("/register")
-    public ResponseEntity<User> registerNewUser(@RequestBody User user) {
-        if (user.getUsername() == null) {
-            return ResponseEntity.notFound().build();
+        public UserController(UserRepository userRepository, UserService userService, BCryptPasswordEncoder passwordEncoder) {
+            this.userRepository = userRepository;
+            this.userService = userService;
+            this.passwordEncoder = passwordEncoder;
         }
-        User newUser = userRepository.save(user);
-        return ResponseEntity.ok(newUser);
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
+        Optional<User> user = userRepository.findByUsername(loginRequest.getUsername());
+
+        if (user.isPresent() && passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword())) {
+            return ResponseEntity.ok("User logged in successfully!");
+        }
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials!");
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body("Email/Username already in use!");
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User savedUser = userRepository.save(user);
+        return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/userdetails")

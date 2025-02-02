@@ -5,13 +5,17 @@ public class ReviewDTO {
     private String content;
     private int rating;
     private String username;
+    private String posterUrl;
 
 
-    public ReviewDTO(Integer id, String content, int rating, String username) {
+
+
+    public ReviewDTO(Integer id, String content, int rating, String username, String posterUrl) {
         this.id = id;
         this.content = content;
         this.rating = rating;
         this.username = username;
+        this.posterUrl = posterUrl;
     }
 
 
@@ -45,5 +49,9 @@ public class ReviewDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPosterUrl() {
+        return posterUrl;
     }
 }

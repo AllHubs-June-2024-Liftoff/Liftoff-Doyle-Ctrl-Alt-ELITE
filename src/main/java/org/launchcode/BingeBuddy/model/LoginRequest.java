@@ -1,15 +1,15 @@
 package org.launchcode.BingeBuddy.model;
 
 public class LoginRequest {
-    private String emailOrUsername;
+    private String username;
     private String password;
 
-    public String getEmailOrUsername() {
-        return emailOrUsername;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmailOrUsername(String emailOrUsername) {
-        this.emailOrUsername = emailOrUsername;
+    public void setUsername(String emailOrUsername) {
+        this.username = username;
     }
 
     public String getPassword() {
