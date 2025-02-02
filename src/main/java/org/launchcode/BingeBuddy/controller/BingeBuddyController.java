@@ -218,16 +218,13 @@ public class BingeBuddyController {
 
     @GetMapping("/review")
     public ResponseEntity<List<ReviewDTO>> getReviews(@RequestParam Integer movieId) {
-        // Fetch the movie by ID
         Optional<Movie> movie = movieRepository.findById(movieId);
         if (movie.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        // Get the poster URL from the Movie entity
         String posterUrl = movie.get().getPoster();
 
-        // Fetch reviews for the given movie and map them to ReviewDTO
         List<ReviewDTO> response = reviewRepository.findByMovieId(movieId).stream()
                 .map(review -> new ReviewDTO(
                         review.getId(),
