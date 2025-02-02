@@ -1,11 +1,16 @@
 package org.launchcode.BingeBuddy.controller;
 
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.launchcode.BingeBuddy.config.APIConfiguration;
 import org.launchcode.BingeBuddy.data.*;
+import org.launchcode.BingeBuddy.dto.CommentDTO;
+import org.launchcode.BingeBuddy.dto.MovieReviewDTO;
 import org.launchcode.BingeBuddy.model.*;
+import org.launchcode.BingeBuddy.dto.ReviewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -14,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/")
@@ -74,23 +80,28 @@ public class BingeBuddyController {
 
 
     @GetMapping("/movie")
-    public ResponseEntity<Movie> getMovieDetails(@RequestParam String apiId) {
-        Optional<Movie> existingMovie = movieRepository.findByApiId(apiId);
-        if (existingMovie.isPresent()) {
-            return ResponseEntity.ok(existingMovie.get());
+    public ResponseEntity<?> getMovieByApiId(@RequestParam String apiId) {
+        Optional<Movie> movie = movieRepository.findByApiId(apiId);
+
+        if (movie.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Movie not found.");
         }
 
-        String apiUrl = String.format("%s?i=%s&apikey=%s", apiConfig.getApiUrl(), apiId, apiConfig.getApiKey());
-        Movie movie = restTemplate.getForObject(apiUrl, Movie.class);
+        List<ReviewDTO> reviewDTOs = movie.get().getReviews().stream()
+                .map(review -> new ReviewDTO(
+                        review.getId(),
+                        review.getContent(),
+                        review.getRating(),
+                        review.getUser().getUsername()
+                ))
+                .collect(Collectors.toList());
 
-        if (movie != null) {
-            movie.setApiId(apiId);
-            movieRepository.save(movie);
-            return ResponseEntity.ok(movie);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        MovieReviewDTO movieReviewDTO = new MovieReviewDTO(movie.get(), reviewDTOs);
+
+        return ResponseEntity.ok(movieReviewDTO);
     }
+
+
 
 
     @PostMapping("/watchlist")
@@ -100,10 +111,8 @@ public class BingeBuddyController {
             @RequestParam WatchlistStatus status,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate scheduledDate) {
 
-
         Optional<Movie> movie = movieRepository.findByApiId(apiId);
         if (movie.isEmpty()) {
-
             String apiUrl = String.format("%s?i=%s&apikey=%s", apiConfig.getApiUrl(), apiId, apiConfig.getApiKey());
             Movie fetchedMovie = restTemplate.getForObject(apiUrl, Movie.class);
 
@@ -116,12 +125,10 @@ public class BingeBuddyController {
             }
         }
 
-
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found. Please provide a valid user ID.");
         }
-
 
         Watchlist watchlistEntry = new Watchlist();
         watchlistEntry.setMovie(movie.get());
@@ -131,17 +138,19 @@ public class BingeBuddyController {
 
         watchlistRepository.save(watchlistEntry);
 
-
         return ResponseEntity.ok("Movie added to watchlist with status: " + status +
                 (scheduledDate != null ? " and scheduled for: " + scheduledDate : ""));
     }
 
 
+
     @GetMapping("/watchlist/{watchlistId}")
-    public ResponseEntity<List<Watchlist>> getWatchlist() {
-        List<Watchlist> watchlist = watchlistRepository.findAll();
-        return ResponseEntity.ok(watchlist);
+    public ResponseEntity<Watchlist> getWatchlist(@PathVariable Integer watchlistId) {
+        return watchlistRepository.findById(watchlistId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
+
 
 
     @DeleteMapping("/watchlist/{watchlistId}")
@@ -186,18 +195,33 @@ public class BingeBuddyController {
 
 
     @GetMapping("/review")
-    public ResponseEntity<List<Review>> getReviews(@RequestParam Integer movieId) {
-        List<Review> reviews = reviewRepository.findByMovieId(movieId);
-        return ResponseEntity.ok(reviews);
-    }
+    public ResponseEntity<List<ReviewDTO>> getReviews(@RequestParam Integer movieId) {
+        List<ReviewDTO> response = reviewRepository.findByMovieId(movieId).stream()
+                .map(review -> new ReviewDTO(
+                        review.getId(),
+                        review.getContent(),
+                        review.getRating(),
+                        review.getUser().getUsername()
+                ))
+                .collect(Collectors.toList());
 
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("review/{reviewId}")
-    public ResponseEntity<Review> getReviewById(@PathVariable Integer reviewId) {
-        Optional<Review> review = reviewRepository.findById(reviewId);
-        return review.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ReviewDTO> getReviewById(@PathVariable Integer reviewId) {
+        return reviewRepository.findById(reviewId)
+                .map(review -> new ReviewDTO(
+                        review.getId(),
+                        review.getContent(),
+                        review.getRating(),
+                        review.getUser().getUsername()
+                ))
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
+
+
 
 
     @PutMapping("review/{reviewId}")
@@ -245,17 +269,30 @@ public class BingeBuddyController {
 
 
     @GetMapping("/comments")
-    public ResponseEntity<List<Comment>> getCommentsByReview(@RequestParam Integer reviewId) {
-        List<Comment> comments = commentRepository.findByReview_Id(reviewId);
-        return ResponseEntity.ok(comments);
+    public ResponseEntity<List<CommentDTO>> getCommentsByReview(@RequestParam Integer reviewId) {
+        List<CommentDTO> response = commentRepository.findByReview_Id(reviewId).stream()
+                .map(comment -> new CommentDTO(
+                        comment.getId(),
+                        comment.getContent(),
+                        comment.getCreatedAt(),
+                        comment.getUser() != null ? comment.getUser().getUsername() : "Anonymous"
+                ))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(response);
     }
 
-
     @GetMapping("comments/{commentId}")
-    public ResponseEntity<Comment> getCommentById(@PathVariable Integer commentId) {
-        Optional<Comment> comment = commentRepository.findById(commentId);
-        return comment.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<CommentDTO> getCommentById(@PathVariable Integer commentId) {
+        return commentRepository.findById(commentId)
+                .map(comment -> new CommentDTO(
+                        comment.getId(),
+                        comment.getContent(),
+                        comment.getCreatedAt(),
+                        comment.getUser() != null ? comment.getUser().getUsername() : "Anonymous" // Handle null user
+                ))
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 
@@ -263,7 +300,7 @@ public class BingeBuddyController {
     public ResponseEntity<String> updateComment(@PathVariable Integer commentId, @RequestBody Comment updatedComment) {
         Optional<Comment> existingComment = commentRepository.findById(commentId);
         if (existingComment.isEmpty()) {
-            return ResponseEntity.badRequest().body("Comment not found.");
+            return ResponseEntity.notFound().build();
         }
 
         Comment comment = existingComment.get();
@@ -279,7 +316,7 @@ public class BingeBuddyController {
     public ResponseEntity<String> deleteComment(@PathVariable Integer commentId) {
         Optional<Comment> comment = commentRepository.findById(commentId);
         if (comment.isEmpty()) {
-            return ResponseEntity.badRequest().body("Comment not found.");
+            return ResponseEntity.notFound().build();
         }
 
         commentRepository.delete(comment.get());

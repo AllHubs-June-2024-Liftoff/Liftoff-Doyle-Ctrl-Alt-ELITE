@@ -7,6 +7,10 @@ import java.time.LocalDateTime;
 @Entity
 public class Comment extends AbstractEntity {
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column
     private String content;
 
@@ -53,4 +57,11 @@ public class Comment extends AbstractEntity {
         this.updatedAt = updatedAt;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

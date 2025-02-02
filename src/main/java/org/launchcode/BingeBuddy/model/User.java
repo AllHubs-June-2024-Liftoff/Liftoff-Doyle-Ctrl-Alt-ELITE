@@ -6,22 +6,16 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User extends AbstractEntity {
+
+
     private String username;
     private String firstName;
     private String lastName;
     private String genre;
     private String anotherGenre;
-    private String email;
+
     private String password;
 
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getPassword() {
         return password;
