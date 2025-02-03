@@ -22,49 +22,24 @@ defaults.plugins.title.color = "black";
 ChartJS.register(...registerables);
 
 const DashboardTrendsComponent = () => {
-  const [reviews, setReviews] = useState();
-  const [comments, setComments] = useState();
-  const [watchlists, setWatchlists] = useState();
+  const [userData, setUserData] = useState([
+    {
+      label: "",
+      value: "",
+    },
+  ]);
 
-  const [userData, setUserData] = useState({
-    label: "",
-    value: "",
-  });
+  let x = 0;
+  let y = 0;
+  let z = 0;
 
   const [error, setError] = useState();
 
-  // const [doughtnutData, setDoughnutData] = useState({
-  //   labels: ["Reviews", "Comments", "Watchlists"],
-  //   datasets: [
-  //     {
-  //       label: "User Activity Stats",
-  //       data: [12, 19, 3],
-  //       backgroundColor: [
-  //         "rgba(43, 63, 229, 0.8)",
-  //         "rgba(250, 192, 19, 0.8)",
-  //         "rgba(253, 135, 135, 0.8)",
-  //       ],
-  //       borderColor: [
-  //         "rgba(43, 63, 229, 0.8)",
-  //         "rgba(250, 192, 19, 0.8)",
-  //         "rgba(253, 135, 135, 0.8)",
-  //       ],
-  //     },
-  //   ],
-  // });
-
   const chartRef = useRef(null);
-
-  function loadStats() {
-    setReviews({ reviews });
-    setComments({ comments });
-    setWatchlists({ watchlists });
-  }
 
   useEffect(() => {
     loadUserData();
   }, []);
-  // }, [doughnutData]);
 
   const handleDataChange = ({ reviews, comments, watchlists }) => {
     setDoughnutData({
@@ -87,42 +62,6 @@ const DashboardTrendsComponent = () => {
       ],
     });
   };
-
-  // const loadReviews = async (e) => {
-  //   const response = await axios
-  //     .get("http://localhost:8080/user-reviews-count/1")
-  //     .then((response) => {
-  //       setReviews(response.data);
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log("There was an error fetching the data", error);
-  //     });
-  // };
-
-  // const loadComments = async (e) => {
-  //   const response = await axios
-  //     .get("http://localhost:8080/user-reviews-count/1")
-  //     .then((response) => {
-  //       setComments(response.data);
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log("There was an error fetching the data", error);
-  //     });
-  // };
-
-  // const loadWatchlists = async (e) => {
-  //   const response = await axios
-  //     .get("http://localhost:8080/user-reviews-count/1")
-  //     .then((response) => {
-  //       setWatchlists(response.data);
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.log("There was an error fetching the data", error);
-  //     });
-  // };
 
   const loadUserData = async (e) => {
     //e.preventDefault();
@@ -149,7 +88,13 @@ const DashboardTrendsComponent = () => {
       );
 
       //
-      console.log("response.data :");
+      console.log("Line 153: response.data :");
+      console.log(response.data[1].label);
+      x = response.data[0].value;
+      console.log(response.data[2].label);
+      y = response.data[1].value;
+      console.log(response.data[1].value);
+      z = response.data[2].value;
       console.log(response.data);
 
       // Set User Data
@@ -158,6 +103,9 @@ const DashboardTrendsComponent = () => {
         [response.data.label]: response.data.value,
       });
       console.log("UserData :" + userData);
+      console.log("----------");
+      console.log(JSON.stringify(userData, null, 2));
+      console.log("----------");
 
       // After setUserData
     } catch (error) {
@@ -198,7 +146,7 @@ const DashboardTrendsComponent = () => {
                     //data: userData.map((data) => data.value),
                     // data: [{ reviews }, { comments }, { watchlists }],
 
-                    data: [10, 20, 30],
+                    data: [20, 25, 15],
                     backgroundColor: [
                       "rgba(43, 63, 229, 0.8)",
                       "rgba(250, 192, 19, 0.8)",
@@ -229,10 +177,6 @@ const DashboardTrendsComponent = () => {
       <div>
         <label>{error}</label>
       </div>
-      {/* <div>
-        <Doughnut ref={chartRef} data={doughnutData} />
-        <button onClick={handleDataChange}> Change Data</button>
-      </div> */}
 
       <div></div>
     </div>

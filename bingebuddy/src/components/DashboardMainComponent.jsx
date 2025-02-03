@@ -91,9 +91,9 @@ const DashboardMainComponent = () => {
         {/* 1 */}
 
         <div className="h-screen flex-1 p-7">
-          {/* <h1 className="text-2xl font-semibold">Welcome BingeBuddy User!</h1> */}
+          {/* <h1 className="text-2xl font-semibold">Welcome BingeBuddy  {userFirstName} !</h1> */}
 
-          <h1>Welcome BingeBuddy {userFirstName} !</h1>
+          <h1>Welcome BingeBuddy User!</h1>
 
           <div className="container-dashmain">
             <div className="header">
