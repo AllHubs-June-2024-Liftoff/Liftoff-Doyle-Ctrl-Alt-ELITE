@@ -4,11 +4,11 @@ import { Chart as ChartJS, defaults, registerables } from "chart.js/auto";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
 
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 import userTrends from "../data/userTrends.json";
 import averageUser from "../data/AverageUser.json";
 import commentsReviewsTrends from "../data/CommentsReviewsTrends.json";
-import commentsReviewsTrend from "../data/CommentsReviewsTrends.json";
 import { data } from "react-router-dom";
 
 defaults.maintainAspectRatio = false;
@@ -26,9 +26,14 @@ const DashboardTrendsComponent = () => {
   const [comments, setComments] = useState();
   const [watchlists, setWatchlists] = useState();
 
+  const [userData, setUserData] = useState({
+    label: "",
+    value: "",
+  });
+
   const [error, setError] = useState();
 
-  // const [chartData, setChartData] = useState({
+  // const [doughtnutData, setDoughnutData] = useState({
   //   labels: ["Reviews", "Comments", "Watchlists"],
   //   datasets: [
   //     {
@@ -57,20 +62,12 @@ const DashboardTrendsComponent = () => {
   }
 
   useEffect(() => {
-    // if (chartRef.current) {
-    //   chartRef.current.Chart.update();
-    // }
-
-    loadReviews();
-    loadComments();
-    loadWatchlists();
-
-    // loadStats();
+    loadUserData();
   }, []);
-  // }, [chartData]);
+  // }, [doughnutData]);
 
   const handleDataChange = ({ reviews, comments, watchlists }) => {
-    setChartData({
+    setDoughnutData({
       labels: ["Reviews", "Comments", "Watchlists"],
       datasets: [
         {
@@ -91,41 +88,90 @@ const DashboardTrendsComponent = () => {
     });
   };
 
-  const loadReviews = async (e) => {
-    const response = await axios
-      .get("http://localhost:8080/user-reviews-count/1")
-      .then((response) => {
-        setReviews(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log("There was an error fetching the data", error);
-      });
-  };
+  // const loadReviews = async (e) => {
+  //   const response = await axios
+  //     .get("http://localhost:8080/user-reviews-count/1")
+  //     .then((response) => {
+  //       setReviews(response.data);
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log("There was an error fetching the data", error);
+  //     });
+  // };
 
-  const loadComments = async (e) => {
-    const response = await axios
-      .get("http://localhost:8080/user-reviews-count/1")
-      .then((response) => {
-        setComments(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log("There was an error fetching the data", error);
-      });
-  };
+  // const loadComments = async (e) => {
+  //   const response = await axios
+  //     .get("http://localhost:8080/user-reviews-count/1")
+  //     .then((response) => {
+  //       setComments(response.data);
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log("There was an error fetching the data", error);
+  //     });
+  // };
 
-  const loadWatchlists = async (e) => {
-    const response = await axios
-      .get("http://localhost:8080/user-reviews-count/1")
-      .then((response) => {
-        setWatchlists(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log("There was an error fetching the data", error);
+  // const loadWatchlists = async (e) => {
+  //   const response = await axios
+  //     .get("http://localhost:8080/user-reviews-count/1")
+  //     .then((response) => {
+  //       setWatchlists(response.data);
+  //       console.log(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log("There was an error fetching the data", error);
+  //     });
+  // };
+
+  const loadUserData = async (e) => {
+    //e.preventDefault();
+
+    try {
+      const token = localStorage.getItem("Token");
+      if (!token) {
+        setError("Cannot get user profile at this time");
+        console.log("Cannot get user token at this time");
+        throw new Error("Failed to fetch user token");
+      }
+
+      const decodedToken = jwtDecode(token);
+
+      const tokenValue = decodedToken.sub.toString();
+
+      const response = await axios.get(
+        "http://localhost:8080/user-activity" + "/" + tokenValue,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      //
+      console.log("response.data :");
+      console.log(response.data);
+
+      // Set User Data
+      setUserData({
+        ...userData,
+        [response.data.label]: response.data.value,
       });
-  };
+      console.log("UserData :" + userData);
+
+      // After setUserData
+    } catch (error) {
+      setError("Cannot get user trends at this time");
+      console.log("Cannot get user trends at this time", error.toString());
+    }
+
+    // printing out userData response
+    console.log("After Catch");
+    console.log(userData);
+    console.log("UserData :" + userData);
+
+    //
+  }; // end of loadData()
 
   return (
     <div className="flex">
@@ -149,8 +195,10 @@ const DashboardTrendsComponent = () => {
                   {
                     label: "User Activity Stats",
                     // data: commentsReviewsTrends.map((data) => data.value),
-                    data: [10, 20, 30],
+                    //data: userData.map((data) => data.value),
                     // data: [{ reviews }, { comments }, { watchlists }],
+
+                    data: [10, 20, 30],
                     backgroundColor: [
                       "rgba(43, 63, 229, 0.8)",
                       "rgba(250, 192, 19, 0.8)",
@@ -182,7 +230,7 @@ const DashboardTrendsComponent = () => {
         <label>{error}</label>
       </div>
       {/* <div>
-        <Doughnut ref={chartRef} data={chartData} />
+        <Doughnut ref={chartRef} data={doughnutData} />
         <button onClick={handleDataChange}> Change Data</button>
       </div> */}
 
