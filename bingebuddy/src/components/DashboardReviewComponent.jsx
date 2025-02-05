@@ -25,7 +25,7 @@ const DashboardReviewComponent = () => {
   // }
 
   //   function addNewReview(){
-  //     navigator('/add-user') // when Add Employee button is clicked, will take user to /add-employee page
+  //     navigator('/add-user') // when Add User button is clicked, will take user to /add-user page
   //   }
 
   //   function updateReview(id){

@@ -6,12 +6,6 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 const DashboardProfileComponent = (subject) => {
-  // const [username, setUserName] = useState("");
-  // const [firstName, setFirstName] = useState("");
-  // const [lastName, setLastName] = useState("");
-  // const [genre, setGenre1] = useState("");
-  // const [anotherGenre, setGenre2] = useState("");
-
   const [userData, setUserData] = useState({
     username: "",
     firstName: "",

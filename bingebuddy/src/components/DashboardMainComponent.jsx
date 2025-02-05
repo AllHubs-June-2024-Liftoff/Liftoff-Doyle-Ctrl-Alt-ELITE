@@ -75,7 +75,6 @@ const DashboardMainComponent = () => {
           ${menu.gap ? "mt-9" : "mt-2"} 
           ${index === 0}`}
               >
-                {/* index === 0 && "bg-light-white" */}
                 <a href={menu.path} className="nav-link text-truncate">
                   <img src={`../src/Images/Dashboard-Images/${menu.src}.png`} />
                   <span

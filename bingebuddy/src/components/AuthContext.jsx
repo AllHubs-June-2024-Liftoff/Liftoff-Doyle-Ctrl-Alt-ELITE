@@ -12,13 +12,11 @@ export const AuthProvider = ({ children }) => {
   const login = () => {
     setIsAuthenticated(true);
     localStorage.setItem("isAuthenticated", true);
-    //localStorage.setItem("accessToken", )
   };
 
   const logout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem("isAuthenticated");
-    //localStorage.removeItem("Token");
   };
 
   return (

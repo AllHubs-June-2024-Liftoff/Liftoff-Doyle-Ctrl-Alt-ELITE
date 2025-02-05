@@ -11,47 +11,11 @@ const DashboardCommentsComponent = () => {
   const [comments, setComments] = useState();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   getAllReviews();
-  // }, [])
-
-  // function getAllReviews(){
-  //   listreviews()
-  //   .then((response) => {
-  //     setReviews(response.data);
-  //   }).catch(error => {
-  //     console.error(error);
-  //   })
-  // }
-
-  //   function addNewReview(){
-  //     navigator('/add-user') // when Add Employee button is clicked, will take user to /add-employee page
-  //   }
-
-  //   function updateReview(id){
-  //     navigator(`/edit-review/${id}`);
-  //   }
-
-  //   function removeReview(id){
-  //     console.log(id);
-  //     deleteReview(id).then((response) => {
-  //         getAllReviews();
-  //     }).catch(error => {
-  //         console.log(error);
-  //     })
-  // }
-
   return (
     <div className="flex">
       <div>
         <SidebarComponent />
       </div>
-
-      {/* <div className='h-screen flex-1 p-7'>
-        <h1 className='center'>
-          User can view their comments here
-        </h1>
-      </div> */}
 
       <div className="container">
         <h2 className="text-center header"> Comments </h2>
@@ -65,11 +29,11 @@ const DashboardCommentsComponent = () => {
             </thead>
             <tbody>
               {/* {
-                reviews.map(review => 
-                  <tr key={review.id}>
-                      <td>{review.created_at}</td>
-                      <td>{review.content}</td>
-                      <td>{review.movieId}</td> */}
+                comments.map(comment => 
+                  <tr key={comments.id}>
+                      <td>{comments.created_at}</td>
+                      <td>{comments.content}</td>
+                      <td>{comments.movieId}</td> */}
               <tr>
                 <td>
                   <img
@@ -83,13 +47,13 @@ const DashboardCommentsComponent = () => {
                   <p>27th Dec 2025</p>
                   {/* <button
                     className="btn btn-secondary"
-                    onClick={() => updateReview(review.id)}
+                    onClick={() => updateComments(comment.id)}
                   >
                     Update
                   </button>
                   <button
                     className="btn btn-dark"
-                    onClick={() => removeReview(review.id)}
+                    onClick={() => removeComment(comment.id)}
                     style={{ marginLeft: "10px" }}
                   >
                     Delete
@@ -105,14 +69,14 @@ const DashboardCommentsComponent = () => {
                   <p>10th December 2024</p>
                   {/* <button
                     className="btn btn-secondary"
-                    onClick={() => updateReview(review.id)}
+                    onClick={() => updateComment(comment.id)}
                   >
                     {" "}
                     Update
                   </button>
                   <button
                     className="btn btn-dark"
-                    onClick={() => removeReview(review.id)}
+                    onClick={() => removeComment(comment.id)}
                     style={{ marginLeft: "10px" }}
                   >
                     {" "}
@@ -136,14 +100,14 @@ const DashboardCommentsComponent = () => {
                   <p>4th April 2024</p>
                   {/* <button
                     className="btn btn-secondary"
-                    onClick={() => updateReview(review.id)}
+                    onClick={() => updateComment(comment.id)}
                   >
                     {" "}
                     Update
                   </button>
                   <button
                     className="btn btn-dark"
-                    onClick={() => removeReview(review.id)}
+                    onClick={() => removeComment(comment.id)}
                     style={{ marginLeft: "10px" }}
                   >
                     {" "}
@@ -164,13 +128,13 @@ const DashboardCommentsComponent = () => {
                   <p>7th July 2024</p>
                   {/* <button
                     className="btn btn-secondary"
-                    onClick={() => updateReview(review.id)}
+                    onClick={() => updateComment(comment.id)}
                   >
                     Update
                   </button>
                   <button
                     className="btn btn-dark"
-                    onClick={() => removeReview(review.id)}
+                    onClick={() => removeComment(comment.id)}
                     style={{ marginLeft: "10px" }}
                   >
                     Delete
@@ -190,13 +154,13 @@ const DashboardCommentsComponent = () => {
                   <p>2nd Jan 2025</p>
                   {/* <button
                     className="btn btn-secondary"
-                    onClick={() => updateReview(review.id)}
+                    onClick={() => updateComment(comment.id)}
                   >
                     Update
                   </button>
                   <button
                     className="btn btn-dark"
-                    onClick={() => removeReview(review.id)}
+                    onClick={() => removeComment(comment.id)}
                     style={{ marginLeft: "10px" }}
                   >
                     {" "}

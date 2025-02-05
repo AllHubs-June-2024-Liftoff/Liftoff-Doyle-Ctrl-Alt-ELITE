@@ -24,7 +24,6 @@ const DecodeTokenComponent = () => {
   return (
     <div>
       <DashboardProfileComponent subject={subject} />
-      {/* {subject ? <p>Subject: {subject}</p> : <p>Loading...</p>} */}
     </div>
   );
 };
