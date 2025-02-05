@@ -17,7 +17,6 @@ const SidebarComponent = () => {
 
   return (
     <div className="flex">
-      {/* 1 */}
       <div
         className={`${open ? "w-72" : "w-20"} 
       bg-dark-purple duration-300 h-screen p-5 pt-8 relative`}
@@ -26,7 +25,6 @@ const SidebarComponent = () => {
           src="../src/Images/Dashboard-Images/control.png"
           className={`absolute cusor-pointer rounded-full -right-3 top-9 w-7 border-2 border-dark-purple 
         ${!open && "rotate-180"}`}
-          // onClick={() => setOpen(!open)}
         />
 
         <div className="flex gap-x-4 items-center">
@@ -52,7 +50,6 @@ const SidebarComponent = () => {
         ${menu.gap ? "mt-9" : "mt-2"} 
         ${index === 0}`}
             >
-              {/* index === 0 && "bg-light-white" */}
               <a href={menu.path} className="nav-link text-truncate">
                 <img src={`../src/Images/Dashboard-Images/${menu.src}.png`} />
                 <span
@@ -65,7 +62,6 @@ const SidebarComponent = () => {
           ))}
         </ul>
       </div>
-      {/* 1 */}
     </div>
   );
 };
